@@ -1,0 +1,134 @@
+<app-modal #confimModal [title]="'Confimação!'" (closeEvent)="router.navigate(['../menu']); cart.cart.next([])">
+  <div class="modal-content confirm-ws">
+    <h1>Tudo Certo!</h1>
+    <p>Obrigado por seu pedido. Clique no botão abaixo para confirmar seu pedido pelo WhatsApp.</p>
+    <button (click)="confirm()"><i class="fi fi-brands-whatsapp"></i> Confimar pelo WhatsApp</button>
+  </div>
+</app-modal>
+
+<app-modal #dados [title]="'Seus dados!'">
+  <div class="modal-content">
+    <h3>Calma, Falta Pouco!</h3>
+    <p style="margin-bottom: 5px;">Precisamos que confirme seus dados!</p>
+    <div class="form" [formGroup]="clienteForm">
+      <div class="box-field">
+        <div class="field">
+          <input id="nome" type="text" placeholder="Seu nome" required formControlName="nome">
+          <label for="nome">Seu nome</label>
+        </div>
+        <div class="validate"></div>
+      </div>
+      <div class="box-field">
+        <div class="field">
+          <input id="telefone" type="text" placeholder="Telefone" required formControlName="telefone">
+          <label for="telefone">Telefone</label>
+        </div>
+        <div class="validate"></div>
+      </div>
+    </div>
+    <button [ngClass]="{'disabled': clienteForm.invalid}" (click)="finalizarPedido()">Ok!</button>
+  </div>
+</app-modal>
+
+<h1 class="title">Meu Carrinho &nbsp; <i class="fi fi-rr-shopping-cart"></i></h1>
+<div class="table-tools">
+  <div class="table-content">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Produto</th>
+          <th></th>
+          <th class="text-center minimize">Preço</th>
+          <th class="text-center">Quantidade</th>
+          <th>Subtotal</th>
+          <th class="text-center">Excluir</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="centralize" *ngFor="let p of cart.getCart().getValue(); let i = index">
+          <td>
+            <div class="product-view">
+              <img src="../../../assets/hamburguer.jpg" height="70px">
+            </div>
+          </td>
+          <td>
+            <span attr-data="Produto">{{p?.product?.name}}</span>
+          </td>
+          <td>
+            <span attr-data="Descrição"
+              style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block;"
+              [ngClass]="{'max' : !((p.additional || []).length > 0)}">
+              <p class="descri">
+                @if ((p.additional || []).length > 0) {
+                <strong>({{getAttributeList(p?.additional)}})</strong> <br>
+                {{p?.observation}}
+                } @else {
+                {{ p.product.description }}
+                }
+              </p>
+            </span>
+          </td>
+          <td class="minimize">
+            <span attr-data="Preço" class="text-center">{{(getAmountValue(p) / p.quantity ) | currency: 'BRL' :
+              'symbol-narrow'}}</span>
+          </td>
+          <td>
+            <span attr-data="Quantidade" style="display: flex;justify-content: center;">
+              <div class="counter text-center" style="justify-content: center;">
+                <span class="minus" (click)="decrement(p)">
+                  <i class="fi fi-rr-minus-small"></i>
+                </span>
+                <div class="text-counter">
+                  <p>{{ p?.quantity }}</p>
+                </div>
+                <span class="more" (click)="increment(p)">
+                  <i class="fi fi-rr-plus-small"></i>
+                </span>
+              </div>
+            </span>
+          </td>
+          <td class="super-text">{{getAmountValue(p) | currency: 'BRL' : 'symbol-narrow'}}
+
+          </td>
+          <td class="text-center">
+            <i (click)="delete(p)" style="padding: 10px 15px;" class="fi fi-rr-trash-xmark"></i>
+          </td>
+        </tr>
+        <!-- <tr>
+          <td colspan="1"></td>
+          <td colspan="3" style="text-align: start;">
+            <br>
+            <div style="display: flex;flex-direction: column;gap: 1em;flex-grow: 1;">
+              <app-delivery #delivery (addressData)="addressData = $event;"></app-delivery>
+              <app-type-pay [valorTotal]="getAllTotalAmountCheck()" (typePayEmmiter)="typePay = $event"></app-type-pay>
+            </div>
+          </td>
+        </tr> -->
+        <tr>
+          <td colspan="5"></td>
+          <td colspan="2" style="justify-content: flex-end;">
+            <div class="line-information-table">
+              <div class="line-subtotal">
+                <span>Total: </span>
+                <span class="value-total">{{total | currency: 'BRL' : 'symbol-narrow'}}</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+&nbsp;
+<app-method-pay #mtdPay></app-method-pay>
+&nbsp;
+<app-method-delivery #mtdDelivery></app-method-delivery>
+<div class="line-information">
+  <div class="line-action" style="justify-content: flex-end;">
+    <a [routerLink]="['../menu']">Continuar comprando</a>
+    @if (cart.getCart().getValue().length > 0) {
+    <button (click)="finalizarPedido()"><i class="fi fi-rr-check"></i> Finalizar Comprar</button>
+    }
+  </div>
+</div>

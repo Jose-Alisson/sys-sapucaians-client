@@ -1,0 +1,159 @@
+import { CommonModule } from '@angular/common';
+import { Component, computed, inject, viewChild, ViewChild } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { CartService } from '../../shared/services/cart/cart.service';
+import { ModalComponent } from "../../shared/comp/modal/modal.component";
+import { MethodPayComponent } from '../../shared/comp/method-pay/method-pay.component';
+import { MethodDeliveryComponent } from '../../shared/comp/method-delivery/method-delivery.component';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { PedidoService } from '../../shared/services/pedido/pedido.service';
+import { Amount } from '../../shared/model/amount.model';
+import { Additional } from '../../shared/model/additional.model';
+import { Order } from '../../shared/model/order.model';
+
+@Component({
+  selector: 'app-cart',
+  standalone: true,
+  imports: [CommonModule, RouterModule, ModalComponent, MethodPayComponent, MethodDeliveryComponent, ReactiveFormsModule],
+  templateUrl: './cart.component.html',
+  styleUrl: './cart.component.scss'
+})
+export class CartComponent {
+
+  order: Order | undefined
+
+  @ViewChild('confimModal')
+  mdlConfirm!: ModalComponent
+
+  @ViewChild('dados')
+  mdlDados!: ModalComponent
+
+  @ViewChild('mtdPay')
+  mtdPay!: MethodPayComponent
+
+  @ViewChild('mtdDelivery')
+  mtdDelivery!: MethodDeliveryComponent
+
+  form = inject(FormBuilder)
+  cart = inject(CartService)
+  pedido = inject(PedidoService)
+  router = inject(Router)
+
+  total = 0
+
+  clienteForm = this.form.group({
+    nome: ['', [Validators.required]],
+    telefone: ['', [Validators.required]]
+  })
+
+  constructor() {
+    if(this.cart.getCart().getValue().length <= 0){
+      this.router.navigate(['menu'])
+      return
+    }
+
+    this.cart.total.subscribe((t) => {
+      this.total = t
+    })
+  }
+
+  increment(amount: Amount) {
+    this.cart.increment(amount)
+  }
+
+  decrement(amount: Amount) {
+    this.cart.decrement(amount)
+  }
+
+  getAmountValue(amount: Amount) {
+    let value = amount?.product.price
+
+    amount?.additional?.forEach((attr: Additional) => {
+      value += attr.price
+    });
+
+    return value * amount?.quantity;
+  }
+
+  getAttributeList(attrs: any) {
+    return attrs?.map((attr: Additional) => attr.name)?.join(', ')
+  }
+
+  delete(amount: Amount) {
+    this.cart.removeItemToCart(amount)
+  }
+
+  sendMenssageWhatsapp(message: string) {
+    const phoneNumber = '+5581973127515';  // Número de telefone no formato internacional
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  }
+
+  finalizarPedido() {
+    if (this.clienteForm.valid) {
+      this.mdlDados!.active = false
+      this.mdlConfirm!.active = true
+
+      let pedido: Order = {
+        name: this.clienteForm.controls.nome.value || '',
+        cellPhone: this.clienteForm.controls.telefone.value || '',
+        amounts: this.cart.cart.getValue(),
+        payment: this.mtdPay.getMethodPayment(),
+        address: this.mtdDelivery.getMethodDelivery(),
+        id: 0,
+        dateCreation: ''
+      }
+
+      console.log(pedido)
+
+      this.order = pedido
+
+      this.pedido.create(pedido).subscribe(data => {
+        this.order = data
+      })
+
+    } else {
+      this.mdlDados!.active = true
+    }
+  }
+
+  confirm() {
+    if (this.order) {
+      let allProduct = ``
+
+      this.order.amounts?.forEach((amount) => {
+        let addicionais = 
+``
+
+        amount.additional?.forEach(add => {
+          addicionais += 
+` 1 ${add.name}\n`
+        })
+
+        let product = 
+`x${amount.quantity} ${amount.product.name} ${this.getAmountValue(amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+${addicionais}`
+        allProduct += product
+      })
+
+      let message = 
+`
+ Olá, Gostaria de Confirmar Meu Pedido! 🍔
+    
+🔹 ID do Pedido: ${this.order.id}
+🔹 Nome do Cliente: ${this.order.name}
+🔹 Telefone: ${this.order.cellPhone}
+🔹 Endereço: ${this.order.address}
+    
+📦 Produtos:
+
+${allProduct}
+    
+💳 Forma de Pagamento: ${this.order.payment}
+💰 Total: ${this.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+`
+      console.log(message)
+      this.sendMenssageWhatsapp(message)
+    }
+  }
+}
