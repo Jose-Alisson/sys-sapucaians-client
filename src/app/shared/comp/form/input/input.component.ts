@@ -34,7 +34,7 @@ export class InputComponent implements ControlValueAccessor, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.name = 'input-' + this.title.replaceAll(' ', '')
+    this.name = 'input-' + this.title.replace(' ', '')
     this.children?.forEach(validate => {
       let control = this.ngControl?.control
       if (control && (validate.control === undefined || validate.control === null) ) {
