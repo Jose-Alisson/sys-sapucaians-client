@@ -13,6 +13,7 @@ import { Amount } from '../../shared/model/amount.model';
 import { category } from '../../shared/model/category.model';
 import { Product } from '../../shared/model/product.model';
 import { Additional } from '../../shared/model/additional.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-menu',
@@ -22,6 +23,8 @@ import { Additional } from '../../shared/model/additional.model';
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent implements OnInit {
+
+  protected API_MAIN = environment.API_MAIN
 
   cart = inject(CartService)
   produtoService = inject(ProdutoService)
