@@ -5,13 +5,18 @@ import { ModalComponent } from "../modal/modal.component";
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from "../form/input/input.component";
 import { ValidateComponent } from "../form/validate/validate.component";
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { InputMaskComponent } from "../form/input-mask/input-mask.component";
 
 @Component({
   selector: 'app-method-pay',
   standalone: true,
-  imports: [DropdownComponent, CommonModule, ModalComponent, ReactiveFormsModule, InputComponent, ValidateComponent],
+  imports: [DropdownComponent, CommonModule, ModalComponent, ReactiveFormsModule, InputComponent, ValidateComponent, NgxMaskDirective, InputMaskComponent],
   templateUrl: './method-pay.component.html',
-  styleUrl: './method-pay.component.scss'
+  styleUrl: './method-pay.component.scss',
+  providers: [
+    provideNgxMask()
+  ]
 })
 export class MethodPayComponent {
 

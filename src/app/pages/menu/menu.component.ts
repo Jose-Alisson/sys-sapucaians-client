@@ -181,6 +181,10 @@ export class MenuComponent implements OnInit {
     this.viewportScroller.scrollToPosition([0, categoryB!.top + window.scrollY - topB!.height || 0])
   }
 
+  scrollToEstablishment(){
+    this.viewportScroller.scrollToAnchor('establishment')
+  }
+
   isSelectInvalid() {
     let invalid = false
 

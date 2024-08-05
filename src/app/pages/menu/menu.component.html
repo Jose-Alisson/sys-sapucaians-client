@@ -61,7 +61,7 @@
         <div class="side-left">
             <h1>{{establishment?.ClientNome}}</h1>
             <h2>Descubra o sabor irresistível que vai conquistar o seu paladar!</h2>
-            <button>Comprar</button>
+            <button (click)="scrollToEstablishment()">Comprar</button>
         </div>
         <div class="side-right">
             <img src="../../../assets/pizza.png" alt="">
@@ -69,7 +69,7 @@
     </div>
 </section>
 <header>
-    <div class="establishment">
+    <div id="establishment" class="establishment">
         <div class="icon">
             <img [src]="'http://localhost:4000/' + establishment?.icone" alt="">
         </div>

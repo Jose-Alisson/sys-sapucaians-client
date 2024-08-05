@@ -5,13 +5,14 @@ import { FileService } from '../file/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { category } from '../../model/category.model';
 import { Product } from '../../model/product.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProdutoService {
 
-  private URL = `http://localhost:8080/product`
+  private URL = `${environment.API_PEDIDOS}/product`
   private http = inject(HttpClient)
   private fileService = inject(FileService)
   private sanitizer = inject(DomSanitizer)

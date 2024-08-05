@@ -24,9 +24,9 @@
                     </div>
                     <div class="validate"></div>
                 </div> -->
-                <app-input title="Valor a pagar" [formControl]="paymentValue">
+                <app-input-mask title="Valor a pagar" [formControl]="paymentValue" [mask]="'separator.2'" prefix="R$ " [dropCharacter]="false">
                     <app-validate validatorName="required" message="O Campo é Obrigatório"></app-validate>
-                </app-input>
+                </app-input-mask>
             </div>
         </div>
         }

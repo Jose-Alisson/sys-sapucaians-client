@@ -10,13 +10,20 @@ import { PedidoService } from '../../shared/services/pedido/pedido.service';
 import { Amount } from '../../shared/model/amount.model';
 import { Additional } from '../../shared/model/additional.model';
 import { Order } from '../../shared/model/order.model';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { InputMaskComponent } from "../../shared/comp/form/input-mask/input-mask.component";
+import { ValidateComponent } from "../../shared/comp/form/validate/validate.component";
+import { InputComponent } from "../../shared/comp/form/input/input.component";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule, ModalComponent, MethodPayComponent, MethodDeliveryComponent, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ModalComponent, MethodPayComponent, MethodDeliveryComponent, ReactiveFormsModule, NgxMaskDirective, InputMaskComponent, ValidateComponent, InputComponent],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.scss'
+  styleUrl: './cart.component.scss',
+  providers: [
+    provideNgxMask(),
+  ]
 })
 export class CartComponent {
 
@@ -43,7 +50,7 @@ export class CartComponent {
 
   clienteForm = this.form.group({
     nome: ['', [Validators.required]],
-    telefone: ['', [Validators.required]]
+    telefone: ['', [Validators.required, Validators.minLength(13)]]
   })
 
   constructor() {

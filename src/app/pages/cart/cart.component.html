@@ -11,20 +11,27 @@
     <h3>Calma, Falta Pouco!</h3>
     <p style="margin-bottom: 5px;">Precisamos que confirme seus dados!</p>
     <div class="form" [formGroup]="clienteForm">
-      <div class="box-field">
+      <!-- <div class="box-field">
         <div class="field">
           <input id="nome" type="text" placeholder="Seu nome" required formControlName="nome">
           <label for="nome">Seu nome</label>
         </div>
         <div class="validate"></div>
-      </div>
-      <div class="box-field">
+      </div> -->
+      <app-input [title]="'Seu nome'" formControlName="nome">
+        <app-validate [validatorName]="'required'" message="Campo obrigatorio"></app-validate>
+      </app-input>
+      <!-- <div class="box-field">
         <div class="field">
-          <input id="telefone" type="text" placeholder="Telefone" required formControlName="telefone">
+          <input id="telefone" type="text" placeholder="Telefone" required  mask="(00) 0000-0000" [showMaskTyped]="true">
           <label for="telefone">Telefone</label>
         </div>
         <div class="validate"></div>
-      </div>
+      </div> -->
+      <app-input-mask [title]="'Telefone'" formControlName="telefone" [mask]="'(00) 0000-0000'" [dropCharacter]="false">
+        <app-validate [validatorName]="'required'" [message]="'Campo obrigatorio'"></app-validate>
+        <app-validate [validatorName]="'minlength'" [message]="'Número de Telefone muito curto'"></app-validate>
+      </app-input-mask>
     </div>
     <button [ngClass]="{'disabled': clienteForm.invalid}" (click)="finalizarPedido()">Ok!</button>
   </div>
@@ -49,7 +56,7 @@
         <tr class="centralize" *ngFor="let p of cart.getCart().getValue(); let i = index">
           <td>
             <div class="product-view">
-              <img src="../../../assets/hamburguer.jpg" height="70px">
+              <img [src]="p.product.photoObject" height="70px">
             </div>
           </td>
           <td>

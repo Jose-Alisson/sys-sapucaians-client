@@ -1,15 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoService {
 
-  private URL = `http://localhost:8080/order`
+  private URL = `${environment.API_PEDIDOS}/order`
   private http = inject(HttpClient)
 
-  constructor() { }
+  constructor() {
+    console.log(this.URL)
+  }
 
   create(pedido: any){
     return this.http.post<any>(`${this.URL}/create`, pedido)
