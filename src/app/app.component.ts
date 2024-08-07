@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { EstablishmentService } from './shared/services/establishment/establishment.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +11,13 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Joliny-Client';
+  
+  private establishmentS = inject(EstablishmentService)
+  private title = inject(Title)
+
+  constructor(){
+    this.establishmentS.getEstablishment().subscribe(data => {
+      this.title.setTitle(`${data.ClientNome} | Cliente`)
+    })
+  }
 }

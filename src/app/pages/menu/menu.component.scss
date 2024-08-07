@@ -68,7 +68,7 @@
             font-size: 1.2em;
             transition: 0.2s;
 
-            &:hover{
+            &:hover {
                 background: $color-third;
                 color: $color-primary;
             }
@@ -165,7 +165,7 @@ header {
         }
     }
 
-    .info{
+    .info {
         display: flex;
         align-items: center;
         font-size: 1em;
@@ -679,13 +679,22 @@ app-sidebar {
 
         .content {
             justify-content: center;
+            position: relative;
 
             .side-left {
-                transform: translateX(70%);
+                // transform: translateX(70%);
+                position: absolute;
+                z-index: 1;
+                max-width: 90%;
             }
 
-            .side-right img{
-                width: 500px;
+            .side-right {
+                transform: translateX(50%);
+                position: absolute;
+
+                img {
+                    width: 500px;
+                }
             }
         }
     }
@@ -726,7 +735,7 @@ app-sidebar {
                 font-size: 1em;
             }
 
-            h2{
+            h2 {
                 display: none;
                 font-size: 0.8em;
             }
