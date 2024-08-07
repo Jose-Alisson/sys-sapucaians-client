@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const app = express();
-const port = 3000;
+const port = 5050;
 
 // Servir arquivos estáticos da pasta 'public'
 const __filename = fileURLToPath(import.meta.url);
