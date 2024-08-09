@@ -64,7 +64,7 @@
             <button (click)="scrollToEstablishment()">Comprar</button>
         </div>
         <div class="side-right">
-            <img src="../../../assets/pizza.png" alt="">
+            <img [src]="API_MAIN + '/' + establishment?.bannerIcon" alt="">
         </div>
     </div>
 </section>
