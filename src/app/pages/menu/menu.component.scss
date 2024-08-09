@@ -672,6 +672,11 @@ app-sidebar {
 }
 
 @media screen and (max-width: 510px) {
+
+    .category-title {
+        font-size: 28px;
+    }
+
     .banner {
         height: 280px;
         font-size: 60%;
@@ -686,6 +691,10 @@ app-sidebar {
                 position: absolute;
                 z-index: 1;
                 max-width: 90%;
+
+                h1 {
+                    font-size: 3.2em !important;
+                }
             }
 
             .side-right {
