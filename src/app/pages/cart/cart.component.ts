@@ -14,6 +14,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { InputMaskComponent } from "../../shared/comp/form/input-mask/input-mask.component";
 import { ValidateComponent } from "../../shared/comp/form/validate/validate.component";
 import { InputComponent } from "../../shared/comp/form/input/input.component";
+import { EstablishmentService } from '../../shared/services/establishment/establishment.service';
 
 @Component({
   selector: 'app-cart',
@@ -45,8 +46,11 @@ export class CartComponent {
   cart = inject(CartService)
   pedido = inject(PedidoService)
   router = inject(Router)
+  establishmentService = inject(EstablishmentService)
 
   total = 0
+
+  protected establishment: any
 
   clienteForm = this.form.group({
     nome: ['', [Validators.required]],
@@ -61,6 +65,10 @@ export class CartComponent {
 
     this.cart.total.subscribe((t) => {
       this.total = t
+    })
+
+    this.establishmentService.inf.subscribe(data => {
+      this.establishment = data
     })
   }
 
@@ -91,7 +99,7 @@ export class CartComponent {
   }
 
   sendMenssageWhatsapp(message: string) {
-    const phoneNumber = '+5581973127515';  // Número de telefone no formato internacional
+    const phoneNumber = `${this.establishment.phoneNumber}`;  // Número de telefone no formato internacional
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   }
@@ -145,7 +153,7 @@ ${addicionais}`
 
       let message = 
 `
- Olá, Gostaria de Confirmar Meu Pedido! 🍔
+ Olá, Gostaria de Confirmar Meu Pedido! 🗒️
     
 🔹 ID do Pedido: ${this.order.id}
 🔹 Nome do Cliente: ${this.order.name}
@@ -159,7 +167,6 @@ ${allProduct}
 💳 Forma de Pagamento: ${this.order.payment}
 💰 Total: ${this.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
 `
-      console.log(message)
       this.sendMenssageWhatsapp(message)
     }
   }

@@ -109,8 +109,9 @@
         </div>
         @if(cart.getCart().getValue().length > 0){
         <div class="icon-cart" (click)="sidebar.toogleActive()">
-            <i class="fi fi-rr-grocery-bag"></i>
+            <i class="fi fi-rr-shopping-cart"></i>
             <span class="text">{{totalCart | currency : 'BRL'}}</span>
+            <p class="counter">{{cart.getCart().getValue().length}}</p>
         </div>
         }
     </div>
@@ -174,7 +175,7 @@
             </div>
         </app-modal>
 
-        <div class="card" (click)="modal.active = true">
+        <div class="card" (click)="modal.active = true" [ngClass]="{'not-available' : !(!!item.available)}">
             <div class="card-img">
                 <img [src]="item.photoObject" alt="">
             </div>
@@ -241,7 +242,7 @@
             </div>
         </app-modal>
 
-        <div class="card" (click)="modal.active = true">
+        <div class="card" (click)="modal.active = true" [ngClass]="{'not-available' : !(!!item.available)}">
             <div class="card-img">
                 <img [src]="item.photoObject" alt="">
             </div>
