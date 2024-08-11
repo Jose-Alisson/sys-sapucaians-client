@@ -21,7 +21,8 @@ export class ProdutoService {
   constructor() { }
 
   getAllToCategory() {
-    return this.http.get<category[]>(`${this.URL}/sortByCategory`).pipe(tap(category => {
+    let params = new HttpParams().append("visible", false)
+    return this.http.get<category[]>(`${this.URL}/sortByCategory`, {params : params}).pipe(tap(category => {
       category.forEach(category => {
         category.products?.forEach(product => {
           if(product.photoUrl){
@@ -36,7 +37,7 @@ export class ProdutoService {
   }
 
   search(s: string) {
-    let params = new HttpParams().append('s', s);
+    let params = new HttpParams().append('s', s).append('visible', false);
     return this.http
       .get<any[]>(`${this.URL}/search`, { params: params })
       .pipe(
