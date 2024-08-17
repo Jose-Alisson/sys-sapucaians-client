@@ -19,7 +19,7 @@ export class EstablishmentService {
   inf = new BehaviorSubject<any>(null)
 
   establishment = {
-    isOpen : true,
+    isOpen : false,
     waitingTime: "45 min",
     timeDelivery: "1 h"
   }
@@ -27,6 +27,10 @@ export class EstablishmentService {
   constructor() {
     this.soc.on('estabelecimento', (est: any) => {
       this.inf.next(est)
+    })
+
+    this.getEstablishment().subscribe(data => {
+      this.inf.next(data)
     })
   }
 

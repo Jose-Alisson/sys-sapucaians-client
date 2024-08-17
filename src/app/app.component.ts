@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { EstablishmentService } from './shared/services/establishment/establishment.service';
 import { Title } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +31,7 @@ export class AppComponent implements OnInit {
       const head = document.head;
       const link = this.renderer.createElement('link');
       this.renderer.setAttribute(link, 'rel', 'stylesheet');
-      this.renderer.setAttribute(link, 'href', 'http://localhost/main/style.css');
+      this.renderer.setAttribute(link, 'href', `${environment.API_MAIN}/style.css`);
       this.renderer.appendChild(head, link);
     }
   }

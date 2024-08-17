@@ -54,7 +54,7 @@ export class CartComponent {
 
   clienteForm = this.form.group({
     nome: ['', [Validators.required]],
-    telefone: ['', [Validators.required, Validators.minLength(13)]]
+    telefone: ['', [Validators.required, Validators.minLength(16)]]
   })
 
   constructor() {
@@ -99,7 +99,8 @@ export class CartComponent {
   }
 
   sendMenssageWhatsapp(message: string) {
-    const phoneNumber = `${this.establishment.phoneNumber}`;  // Número de telefone no formato internacional
+    const phoneNumber = `${this.establishment?.phoneNumber}`;  // Número de telefone no formato internacional
+    console.log(phoneNumber)
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   }

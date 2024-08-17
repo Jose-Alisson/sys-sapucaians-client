@@ -69,7 +69,6 @@ export class MenuComponent implements OnInit {
     let allSelected = true
     
     this.add?.forEach(a => {
-      console.log(a)
       if (a.select.length < a.additional.min) {
         a.active = true
         allSelected = false

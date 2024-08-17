@@ -28,7 +28,7 @@
         </div>
         <div class="validate"></div>
       </div> -->
-      <app-input-mask [title]="'Telefone'" formControlName="telefone" [mask]="'(00) 0000-0000'" [dropCharacter]="false">
+      <app-input-mask [title]="'Telefone'" formControlName="telefone" [mask]="'(00) 0 0000-0000'" [dropCharacter]="false">
         <app-validate [validatorName]="'required'" [message]="'Campo obrigatorio'"></app-validate>
         <app-validate [validatorName]="'minlength'" [message]="'Número de Telefone muito curto'"></app-validate>
       </app-input-mask>
